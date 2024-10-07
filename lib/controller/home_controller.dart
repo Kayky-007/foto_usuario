@@ -1,43 +1,23 @@
-import 'dart:io';
+import 'package:foto_usuario/modal/home_model.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 
 class HomeController {
-  XFile? _imagem;
-  XFile? imagemSelecionada;
+  final ImagemModel _imagemModel = ImagemModel();
 
-  XFile? get imagem => _imagem;
+  XFile? get imagem => _imagemModel.imagem;
 
+  
   Future<void> obterImagem() async {
     final imagem = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (imagem == null) return;
 
-    _imagem = imagem;
-  }
-
-  Future<String> salvarImagem() async {
-    if (_imagem == null) {
-      print("Nenhuma imagem foi selecionada");
-    } else {
-      imagemSelecionada = _imagem;
-    }
-
-    final diretorio = await getApplicationDocumentsDirectory();
-
-    final String nomeArquivo = 'imagem_${DateTime.now().millisecondsSinceEpoch}.png';
-    final File novaImagem = File('${diretorio.path}/$nomeArquivo');
-
-    
-    await novaImagem.copy(imagemSelecionada!.path);
-  print(novaImagem.path);
-    return novaImagem.path;
+    _imagemModel.setImagem(imagem); 
   }
 
   
-
   Future<void> verificadorImagem() async {
     try {
-      String salvarPath = await salvarImagem();
+      String salvarPath = await _imagemModel.salvarImagem();
       if (salvarPath.isNotEmpty) {
         print("Imagem salva em: $salvarPath");
       } else {

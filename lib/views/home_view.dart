@@ -1,3 +1,4 @@
+import 'dart:io'; 
 import 'package:flutter/material.dart';
 import 'package:foto_usuario/controller/home_controller.dart';
 
@@ -19,9 +20,10 @@ class _HomeViewState extends State<HomeView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            
             controller.imagem != null
-                ? Image.network(
-                    controller.imagem!.path,
+                ? Image.file(
+                    File(controller.imagem!.path), 
                     width: 200,
                     height: 300,
                   )
@@ -39,7 +41,7 @@ class _HomeViewState extends State<HomeView> {
             ElevatedButton(
               onPressed: () async {
                 await controller.obterImagem();
-                setState(() {}); // Atualiza a tela após selecionar a imagem
+                setState(() {}); 
               },
               child: const Text("Selecionar imagem"),
             ),
@@ -51,7 +53,7 @@ class _HomeViewState extends State<HomeView> {
           children: [
             ElevatedButton(
               onPressed: () {
-                controller.salvarImagem();
+                controller.verificadorImagem(); 
               },
               child: const Text("Salvar imagem"),
             ),
